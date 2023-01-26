@@ -12,11 +12,24 @@ def median_tree_height(commands, middle):
   Pre: commands is a list of commands, middle is the middle or lower middle value of the current collection.
   Post: return list of outputs
   '''
-  commands = commands[0].split(' ')
+  # question to consider: do we have two median roots?????
+  tree_height_heap = []
+  min_heap = []
+  max_heap = []
+  commands = commands.split(' ')
+  initialize = commands[0].split(' ')
+
+  # sort input into lists?
+  for i in range(1, len(initialize)):
+  	curr = str(i)
+  	if curr < median:
+  		min_heap.append(curr)
+
+  	elif curr > median:
+  		max_heap.append(curr)
+
 
   # initialize the heap
-
-
 
 if __name__ == '__main__':
     # some small test cases
