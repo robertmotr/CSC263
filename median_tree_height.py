@@ -52,8 +52,9 @@ def max_heapify_down(heap, node):
 
 
 # sets node to correct position in heap for a min heap
+# INDEX IS 1 BASED !!!!!
 def min_heapify_down(heap, node):
-	while i * 2 <= len(heap):
+	while i * 2 < len(heap):
 		l_index = 2 * i
 		r_index = 2 * i + 1
 
@@ -70,6 +71,15 @@ def min_heapify_down(heap, node):
 			#right is smaller
 			heap[i], heap[2 * i + 1] = heap[2 * i + 1], heap[i]
 			i = 2 * i + 1
+
+
+	if i * 2 == len(heap):
+		#left child exists but right doesnt
+		if heap[i*2] < heap[i]:
+			heap[i], heap[2 * i] = heap[2 * i], heap[i]
+
+
+
 
 
 
