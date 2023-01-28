@@ -7,7 +7,8 @@ University of Toronto Mississauga
 
 # Do NOT add any "import" statements
 
-# sets node to correct position in heap for a max heap
+# Bubbles down the node at index i to the correct position in a max heap
+
 def max_heapify_down(heap, i):
     '''
     >>> list = []
@@ -17,6 +18,7 @@ def max_heapify_down(heap, i):
     '''
 
     while i * 2 < len(heap):
+        #runs until completion, or until it reaches a node with only a left child
         l_index = 2 * i
         r_index = 2 * i + 1
 
@@ -39,10 +41,12 @@ def max_heapify_down(heap, i):
 
 
     if i * 2 == len(heap) - 1:
-        #left child exists but right doesnt
+        #there remains 1 unchecked node with only a left child
         if heap[i * 2] > heap[i]:
             heap[i], heap[2 * i] = heap[2 * i], heap[i]
 
+
+# Bubbles up the node at index i to the correct position in a max heap
 def max_heapify_up(heap, i):
     while i > 1:
         if heap[int(i/2)] >= heap[i]:
@@ -56,10 +60,10 @@ def max_heapify_up(heap, i):
 
 
 
-# sets node to correct position in heap for a min heap
-# INDEX IS 1 BASED !!!!!
+# Bubbles down the node at index i to the correct position in a min heap
 def min_heapify_down(heap, i):
     while i * 2 < len(heap):
+        # runs until completion, or until it reaches a node with only a left child
         l_index = 2 * i
         r_index = 2 * i + 1
         if r_index >= len(heap):
@@ -81,7 +85,7 @@ def min_heapify_down(heap, i):
 
 
     if i * 2 == len(heap) - 1:
-        #left child exists but right doesnt
+        #there remains 1 unchecked node with only a left child
         if heap[i*2] < heap[i]:
             heap[i], heap[2 * i] = heap[2 * i], heap[i]
 
@@ -128,7 +132,6 @@ def initialize(middle, commands_list):
     if duplicates != 0:
         max_heap.append(middle)
 
-
     for i in range( int(len(max_heap)/2), 0, -1):
         max_heapify_down(max_heap, i)
 
@@ -161,7 +164,10 @@ def insert(num, max_heap, min_heap, middle):
         max_insert(max_heap, num)
 
 
-
+def get_higher_middle(min_heap, max_heap):
+    if min_heap[1] > max_heap[1]:
+        return min_heap[1]
+    return max_heap[1]
 
 
 
@@ -171,7 +177,6 @@ def median_tree_height(commands, middle):
   Pre: commands is a list of commands, middle is the middle or lower middle value of the current collection.
   Post: return list of outputs
   '''
-  # question to consider: do we have two median roots????? WHO CARES XD
 
   #both heaps[0] will be some useless element to make it 1 based, so the real root is heap[1]
 
