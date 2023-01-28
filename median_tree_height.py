@@ -68,6 +68,8 @@ def min_heapify_down(heap, i):
 		if heap[i*2] < heap[i]:
 			heap[i], heap[2 * i] = heap[2 * i], heap[i]
 
+
+
 #MIN HEAP IS THE ONE WITH THE BIGGER ELEMENTS
 def initialize(middle, init_string):
 	init_list = init_string.split(' ')
@@ -85,17 +87,20 @@ def initialize(middle, init_string):
 		else:
 			#num = middle
 			duplicates += 1
-	for i in range(duplicates):
 
+	while len(max_heap) != len(min_heap) and duplicates != 0:
+		if len(max_heap) < len(min_heap):
+			max_heap.append(middle)
 
+		else:
+			min_heap.append(middle)
 
+	if duplicates != 0:
+		max_heap.append(middle)
 
+	return max_heap, min_heap
 
-
-
-
-
-
+def insert():
 
 
 
@@ -105,23 +110,14 @@ def median_tree_height(commands, middle):
   Pre: commands is a list of commands, middle is the middle or lower middle value of the current collection.
   Post: return list of outputs
   '''
-  # question to consider: do we have two median roots?????
-  tree_height_heap = []
-  min_heap = []
-  max_heap = []
-  commands = commands.split(' ')
-  initialize = commands[0].split(' ')
+  # question to consider: do we have two median roots????? WHO CARES XD
+  output = []
+  max_heap, min_heap = initialize(middle, commands[0])
+  output.append(middle)
+  commands.pop(0)
 
-  # sort input into min_heap and max_heap lists
-  for i in range(1, len(initialize)):
-  	curr = str(i)
-  	if curr < middle:
-  		min_heap.append(curr)
 
-  	elif curr > middle:
-  		max_heap.append(curr)
-  for i in range(floor(n/2), 1):
-  	
+
 
 
   # initialize the heap
