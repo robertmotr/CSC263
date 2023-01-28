@@ -15,45 +15,35 @@ def max_heapify_down(heap, node):
 	>>> retval
 	# fill out unit test here later
 	'''
-	for i in range(0, len(heap)):
-		# check if L + R child exist in heap
-		l_index = 2 * (i + 1) - 1
-		r_index = 2* (i + 2) - 1
-		l = l_index  > len(heap) - 1
-		r = r_index > len(heap) - 1
 
-		if l and r:
-			maxval = max(heap[i], heap[l_index], heap[r_index])
-			if heap[i] == maxval:
-				# root is largest so its already a max heap
-				return heap
+	while i * 2 < len(heap):
+		l_index = 2 * i
+		r_index = 2 * i + 1
 
-			elif heap[l_index] == maxval:
-				# swap with left
-				heap[i], heap[l_index] = heap[l_index], heap[i]
-				return max_heapify_down(heap, node)
-				
+		if heap[i] >= heap[l_index] and heap[i] >= heap[r_index]:
+			#property is satisfied
+			break
 
-			elif heap[r_index] == maxval:
-				# swap with right
-			
-			
-
-		elif not (l and r):
-			# already a max heap do nothing
-			pass
+		elif heap[r_index] <= heap[l_index]:
+			#left is bigger (higher priority)
+			heap[i], heap[2 * i] = heap[2 * i], heap[i]
+			i = 2 * i
 
 		else:
-			if l:
-				if
-			if r:
+			#right is bigger
+			heap[i], heap[2 * i + 1] = heap[2 * i + 1], heap[i]
+			i = 2 * i + 1
 
 
+	if i * 2 == len(heap):
+		#left child exists but right doesnt
+		if heap[i*2] > heap[i]:
+			heap[i], heap[2 * i] = heap[2 * i], heap[i]
 
 
 # sets node to correct position in heap for a min heap
 # INDEX IS 1 BASED !!!!!
-def min_heapify_down(heap, node):
+def min_heapify_down(heap, i):
 	while i * 2 < len(heap):
 		l_index = 2 * i
 		r_index = 2 * i + 1
@@ -77,6 +67,33 @@ def min_heapify_down(heap, node):
 		#left child exists but right doesnt
 		if heap[i*2] < heap[i]:
 			heap[i], heap[2 * i] = heap[2 * i], heap[i]
+
+#MIN HEAP IS THE ONE WITH THE BIGGER ELEMENTS
+def initialize(middle, init_string):
+	init_list = init_string.split(' ')
+	init_list.pop(0);
+
+	min_heap = []
+	max_heap = []
+	duplicates = 0
+	for string in init_list:
+		num = int(string)
+		if num > middle:
+			min_heap.append(num)
+		elif num < middle:
+			max_heap.append(num)
+		else:
+			#num = middle
+			duplicates += 1
+	for i in range(duplicates):
+
+
+
+
+
+
+
+
 
 
 
