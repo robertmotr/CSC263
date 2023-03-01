@@ -3,12 +3,12 @@
 
 typedef struct {
     int *array;
+    int size;
 } MaxHeap;
 
-// max heap functions
 MaxHeap *create_heap(int *array, int size);
 
-int *max(MaxHeap *MaxHeap);
+int extract_max(MaxHeap *MaxHeap);
 void increase_priority(MaxHeap *MaxHeap, int index, int value);
 void insert(MaxHeap *MaxHeap, int value);
 void max_heapify_down(MaxHeap *MaxHeap, int index);
