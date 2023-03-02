@@ -51,9 +51,21 @@ MaxHeap *create_heap(int *array, int size) {
     return heap;
 }
 
+/*
+Returns a pointer to the maximum element in the heap.
+Swaps the last element in the heap with the root, then bubbles
+down the swapped element at the roop, taking Theta(log n) time. Returns
+the original maximum of the heap.
+
+If the heap is empty, returns NULL.
+*/
 int extract_max(MaxHeap *heap) {
     // Swap last element in the array with root
     // Then bubble down the root
+    if(heap->size <= 0) {
+        return __INT_MAX__;
+    } 
+
     int root = heap->array[0];
     int tmp = heap->array[heap->size - 1];
     heap->array[heap->size - 1] = heap->array[0];
@@ -82,6 +94,11 @@ int max(MaxHeap *heap) {
     return heap->array[0];
 }
 
+/*
+Increases the value of element i to value, and then bubbles up
+accordingly.
+Theta(logn) = Theta(height) time
+*/
 void increase_priority(MaxHeap *heap, int index, int value) {
     int *arr = heap->array;
     arr[index - 1] = value;
@@ -98,7 +115,10 @@ void increase_priority(MaxHeap *heap, int index, int value) {
         i = (int) (i / 2);   
     }
 }
-
+/*
+Inserts value at the end of the array to keep it nearly complete
+Then bubbles up by swapping
+*/
 void insert(MaxHeap *heap, int value) {
     MaxHeap *tmp = heap;
 
@@ -121,6 +141,78 @@ void insert(MaxHeap *heap, int value) {
     increase_priority(heap, heap->size, value);
 }
 
+/*
+Preconditions: i is a node in a nearly complete binary tree.
+Left(i) and Right(i) are max-heaps.
+
+Postconditions:
+Binary trees rooted at i is a max heap.
+
+Bubbles down index to a proper position by swapping with children.
+i is one based.
+*/
 void max_heapify_down(MaxHeap *heap, int index) {
-    
+    bubble_down(heap, index);
+}
+
+/*
+Given an unsorted array A, return a max-heap that includes all elements in A.
+We call maxheapinsert for each element in A, taking Theta(n logn) time.
+*/
+MaxHeap *build_max_heap_naive(int *array, int size) {
+    MaxHeap *h = malloc(sizeof(MaxHeap));
+    h->size = size;
+    h->array = malloc(sizeof(int) * size);
+
+    for(int i = 0; i < size; i++) {
+        insert(h, array[i]);
+    }
+    return h;
+}
+
+/*
+Starting from bottom of tree,
+call max heapify down on all non-leaf nodes.
+That is, for i = floor(n/2) to 1:
+            MaxHeapifyDown
+(for i as a one based index)
+*/
+MaxHeap *build_max_heap(int *array, int size) {
+    MaxHeap *h = malloc(sizeof(MaxHeap));
+    h->size = size;
+    h->array = malloc(sizeof(int) * size);
+
+    for(int i = (int) (i / 2) - 1; i > 1; i--) {
+        max_heapify_down(h, i + 1);
+    }
+    return h;
+}
+
+/*
+Implements a naive heap sort that takes Theta(n logn) time.
+Given a max-heap H, we can create a sorted array by extracting max
+element n times. Array will be sorted in non-ascending order. 
+*/
+int *naive_heap_sort(MaxHeap *heap) {
+    int *sorted_array = malloc(sizeof(int) * heap->size);
+
+    int max = extract_max(heap);
+    int i = 0;
+    while(max != __INT_MAX__) {
+        sorted_array[i] = max;
+        max = extract_max(heap);
+        i++;
+    }
+    return sorted_array;
+}
+
+/*
+Implements a smarter heap sort that takes Theta(log n) time.
+Given a max-heap H, we can create a sorted array by:
+    - converting A to max heap
+    - point count to end of A
+    - 
+*/
+int *heap_sort(MaxHeap *heap) {
+
 }
