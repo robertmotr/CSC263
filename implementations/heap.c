@@ -4,12 +4,18 @@
 #include <math.h>
 #include <string.h>
 
-// File implements all maxheap and minheap functions
-// All functions in this file assume ONE-BASED indexing as
-// per CSC263 course notes.
+// File implements all maxheap and minheap functions as covered in CSC263
+// General assumptions: 
+// 1. All arrays are 0-indexed
+// 2. All indices are 1-indexed
+// 3. For heap-allocated parameters that are passed in, a copy is created and the original parameter is not modified.
+
 
 // self-explanatory....
 int max(MaxHeap *heap) {
+    if(heap->size == 0) {
+        return __INT_MAX__;
+    }
     return heap->array[0];
 }
 
@@ -20,10 +26,13 @@ Swaps the last element in the heap with the root, then bubbles
 down the swapped element at the roop, taking Theta(log n) time. Returns
 the original maximum of the heap.
 
-If the heap is empty, returns NULL.
+If the heap is empty, returns __INT__MAX__.
 */
 int extract_max(MaxHeap *heap) {
     int m = max(heap);
+    if(m == __INT_MAX__) {
+        return m;
+    }
 
     // Swap first and last element
     int tmp = heap->array[heap->size - 1];
@@ -66,8 +75,7 @@ int bubble_down_helper(int *position, int index, int size) {
 }
 
 /*
-Bubble down AKA max_heapify_down. Takes O(log n) time in the worst case.
-Index is one-based.
+Bubble down AKA max_heapify_down. Takes O(log n) time in the worst case. Index is one-based.
 
 issues: are we guaranteed that if we hit a child that is not greater than parent we can stop recursing?
 */
@@ -174,11 +182,16 @@ because we do not use insert method. Returns a pointer to the new
 max heap object created.
 */
 MaxHeap *build_max_heap(int *array, int size) {
-    for(int i = (int) (size - 1 / 2); i > 0; i--) {
-        max_heapify_down(array, i);
-    }
-}
+    MaxHeap *heap = malloc(sizeof(MaxHeap));
+    heap->allocated = size;
+    heap->size = size;
+    heap->array = array;
 
+    for(int i = (int) (size - 1 / 2); i > 0; i--) {
+        max_heapify_down(heap, i);
+    }
+    return heap;
+}
 
 /*
 Given an arbitrary unsorted array of size n, converts the array
@@ -186,18 +199,20 @@ into a max-heap using build_max_heap_naive, then sorts into ascending
 order.
 */
 int *heap_sort_naive(int *a, int size) {
-    MaxHeap *heap = build_max_heap(a, size); // n logn time
+    MaxHeap *heap = build_max_heap_naive(a, size); // n logn time
     int *b = heap->array;
     for(int i = size; i > 2; i--) { // n time
-        int tmp = b[size - 1];
-        b[size - 1] = b[0];
-        b[0] = tmp;
+
     }
     free(heap);
     heap = NULL;
     return b;
 }
 
+/*
+Given an arbitrary unsorted array of size n, converts the array into
+a max-heap using build_max_heap, then sorts into ascending order. 
+*/
 int *heap_sort(int *a, int size) {
     MaxHeap *heap = build_max_heap(a, size); // n time
     int *b = heap->array;
