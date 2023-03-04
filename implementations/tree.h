@@ -19,7 +19,7 @@ void pre_order_traversal(BST *x);
 void post_order_traversal(BST *x);
 
 int BSTSearch(BST *x, int value);
-int BSTInsert(BST *x, int value);
+BST *BSTInsert(BST *x, int value);
 int BSTTransplant(BST* x);
 
 BST *BSTMin(BST *x);

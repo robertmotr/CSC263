@@ -67,21 +67,33 @@ BST *BSTMax(BST *x) {
     return NULL;
 }
 
-int BSTInsert(BST *x, int value) {
+BST *BSTInsert(BST *x, int value) {
     if(x == NULL) {
+
         BST *tmp = x;
         x = malloc(sizeof(BST));
-        x->left = NULL; x->right = NULL; x->p = tmp;
+        x->left = NULL; x->right = NULL;
+        x->p = tmp;
         x->key = value;
-        return 1;
+
+        return x;
     }
     else if(x->key > value) {
-        x->left = BSTInsert(x->left, value);
+        return BSTInsert(x->left, value);
     }
     else if(x->key < value) {
-        x->right = BSTInsert(x->right, value);
+        return BSTInsert(x->right, value);
     }
     else {
-        // do nothing since node already exists
+        return x;
     }
+}
+
+BST *successor(BST *x) {
+    if(x != NULL) {
+        if(x->right != NULL) {
+            return BSTMin(x->right);
+        }
+    }
+    
 }
