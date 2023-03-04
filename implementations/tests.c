@@ -5,6 +5,5 @@
 #define NDEBUG
 
 int main(int argc, char *argv[]) {
-
     
 }
