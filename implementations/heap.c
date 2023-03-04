@@ -12,13 +12,13 @@
 
 
 // self-explanatory....
+// returns INTMAX if heap size is 0
 int max(MaxHeap *heap) {
     if(heap->size == 0) {
         return __INT_MAX__;
     }
     return heap->array[0];
 }
-
 
 /*
 Returns a pointer to the maximum element in the heap.
