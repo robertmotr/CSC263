@@ -18,14 +18,15 @@ void in_order_traversal(BST *x);
 void pre_order_traversal(BST *x);
 void post_order_traversal(BST *x);
 
-int BSTSearch(BST *x, int value);
-BST *BSTInsert(BST *x, int value);
-int BSTTransplant(BST* x);
-
-BST *BSTMin(BST *x);
-BST *BSTMax(BST *x);
+BST *TreeSearch(BST *root, int value);
+BST *TreeMin(BST *x);
+BST *TreeMax(BST *x);
 
 BST *successor(BST *x);
 BST *predecessor(BST *x);
+
+BST *TreeInsert(BST *root, BST *node);
+BST *Transplant(BST *root, BST *u, BST *v);
+BST *TreeDelete(BST *x, BST *node);
 
 #endif
