@@ -100,7 +100,7 @@ class HashTable(object):
         or None if no such node exists.
         """
         index = self.hash(k)
-        while self.array[index] != None and self.array[index] != DELETED:
+        while self.array[index] != None or self.array[index] != DELETED:
             if self.array[index].key == k:
                 return self.array[index].val
             index = (index + 1) % self.capacity
