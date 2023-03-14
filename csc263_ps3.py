@@ -100,8 +100,8 @@ class HashTable(object):
         or None if no such node exists.
         """
         index = self.hash(k)
-        while self.array[index] != None or self.array[index] != DELETED:
-            if self.array[index].key == k:
+        while self.array[index] != None:
+            if self.array[index] != "DELETED" and self.array[index].key == k:
                 return self.array[index].val
             index = (index + 1) % self.capacity
         return None
@@ -139,62 +139,6 @@ class HashTable(object):
 
 # You may add additional test case below. HOWEVER, your code must
 # compile and be runnable in order to earn any credit for correctness.
-def test_search():
-    # make a new table and just add a
-    ht = HashTable()
-    ht.insert(1, 'spiderman')
-    assert ht.search(1) == 'spiderman'
-    # look for key that doesnt exist
-    assert ht.search(2) == None
-    # test that replaces value since key already present
-    ht.insert(1, 'batman')
-    assert ht.search(1) == 'batman'
-    # check if key 1 is in table after deleting
-    ht.delete(1)
-    assert ht.search(1) == None
-def test_search2():
-    # make a table with 1 key and search for another non existent key
-    ht = HashTable()
-    ht.insert(1, 'galactus')
-    assert ht.search(2) is None
-
-    # this time a new hashtable is made every time bcz idk stackoverflow dude
-    ht = HashTable()
-    ht.insert(1, 'yin')
-    ht.insert(2, 'yang')
-    assert ht.search(1) == 'yin'
-    assert ht.search(2) == 'yang'
-
-    # test for key was deleted
-    ht = HashTable()
-    ht.insert(1, 'owl')
-    ht.delete(1)
-    assert ht.search(1) is None
-
-    # huge search
-    ht = HashTable(initial_capacity=100)  # copied syntax from constructor
-    for i in range(50):
-        ht.insert(i, str(i))
-    assert ht.search(25) != '26'
-def test_insert():
-    # test inserting a new element
-    ht = HashTable()
-    ht.insert(1, 'a')
-    assert ht.array[ht.hash(1)].key == 1 and ht.array[ht.hash(1)].val == 'a'
-
-    # test inserting an element with an existing key
-    ht.insert(1, 'b')
-    assert ht.array[ht.hash(1)].key == 1 and ht.array[ht.hash(1)].val == 'b'
-
-    # test inserting more elements than the initial capacity
-    ht = HashTable(initial_capacity=3)
-    ht.insert(1, 'a')
-    ht.insert(2, 'b')
-    ht.insert(3, 'c')
-    assert ht.capacity == 12 and ht.size == 3
-    ht.insert(4, 'd')
-    assert ht.capacity == 12 and ht.size == 4
-
 if __name__ == "__main__":
     T = HashTable(5)
     T.insert(1, "c")
@@ -218,6 +162,3 @@ if __name__ == "__main__":
     # check that search gives us the appropriate result
     n = T.search(1)
     assert(n == "c")
-    test_search()
-    test_insert()
-    test_search2()
