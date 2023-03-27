@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\title{CSC263H5 Problem Set 3}
+\author{Robert Motrogeanu (1008070169/motroge1)}
+\date{March 12th 2023}
+
+\begin{document}
+
+\maketitle
+\noindent Dear Riley, \\ 
+
+\noindent I have attached the code as the \verb|csc263_ps3.py| file below. The correctness of the \verb|HashTable| class can be divided up into three parts, \verb|INSERT(k, v)|, \verb|SEARCH(k)| and \verb|DELETE(k)|. \\ \\ 
+\verb|INSERT(k, v)| correctness:
+\begin{itemize}
+    \item For \verb|INSERT(k, v)|, we first use the provided hash function to generate an index, and then check if it maps to free slots in the \verb|HashTable| (either \verb|None| or \verb|"DELETED"|). If so, we insert the $(k, v)$ pair at that index. Otherwise, we use a linear probing sequence to find the next free slot.
+    \item After the insertion, we check if the \verb|capacity| attribute of the \verb|HashTable| is $\geq50\%$. If so, we create a new \verb|HashTable| with doubled size, and re-hash all $(k, v)$ pairs from the old \verb|HashTable| into the new one. This is to ensure the hashing function is consistent, as the function is dependent on the \verb|capacity| attribute. Had we not re-hashed all old $(k, v)$ pairs into a new table, all $(k, v)$ pairs would have indexes generated with the old \verb|capacity| attribute from the hashing function, breaking our \verb|SEARCH| algorithm.
+    \item We always double the capacity at $\geq50\%$ capacity to ensure that we are always guaranteed free slots.
+\end{itemize}
+\verb|SEARCH(k)| correctness:
+\begin{itemize}
+    \item For \verb|SEARCH(k)|, we generate an index and probe until a free slot. While probing, we check if the index contains the key we are searching for. The \verb|SEARCH| algorithm terminates once we encounter an empty slot (a \verb|None| type slot).
+    \item We do not stop at \verb|"DELETED"| slots because our insertion algorithm maps elements into the \verb|HashTable| in clusters. If we delete an element in the middle of a cluster, then the \verb|SEARCH| algorithm would give up on a \verb|"DELETED"| slot even though the key being searched could be further in the cluster.
+    \item The reasoning above (clustering) is also why we stop probing upon a \verb|None| slot.
+\end{itemize}
+\verb|DELETE(k)| correctness:
+\begin{itemize}
+    \item For \verb|DELETE(k)|, we use the \verb|SEARCH| algorithm to determine if the key being searched for exists. Upon existence, we mark the slot with the string \verb|"DELETED"|, delete the $(k, v)$ pair at the slot, and then decrement the size of the \verb|HashTable|. 
+    \item Marking deleted slots in the \verb|HashTable| is necessary to prevent the \verb|SEARCH| algorithm from breaking, as it terminates when it reaches a \verb|None| slot.
+    \item If the size of the \verb|HashTable| is $\leq25\%$, we halve the \verb|HashTable|'s capacity and re-hash all $(k, v)$ pairs into a new \verb|HashTable| with the appropriate capacity to maintain hashing function consistency.
+\end{itemize}
+
+\noindent Next, let's analyze the amortized run-time using aggregate analysis. Suppose that $n$ worst-case \verb|INSERT| operations occur, followed by $n$ worst-case \verb|DELETE| operations. Assume that our hashing function always collides with taken slots, meaning we probe as much as possible. Let $T(n)$ represent the total operations, assuming that probing once, inserting a $(k, v)$ pair, and deleting a $(k, v)$ pair take one step each. Then,
+\begin{align*}
+    T(n) &= n + \sum_{i=1}^{n}{i} + \sum_{i=1}^{\lfloor{log_{2}{\tfrac{n}{5}} + 1\rfloor}}({5\cdot{2^{i-1}}} + \sum_{j=1}^{5\cdot{2^{i-1}}}{j}) + (1 + 2 + 3) + 3 
+\end{align*}
+where the first $n$ term represents the total insertions, and the first sum represents the total probes. The second sum represents the number of times we resize the hash table, accompanied by the amount of inserts and probes in the new table, where $5\cdot{2^{i-1}}$ is the size of the new table. The last terms account for the first resizing, where there are $(1 + 2 + 3)$ probes and $3$ insertions in the new table.\\ \\ 
+
+\noindent Notice that:
+\begin{align*}
+    T(n) &= n + \sum_{i=1}^{n}i + \sum_{i=1}^{\lfloor{\log_{2}{\tfrac{n}{5}} + 1\rfloor}}(5\cdot{2^{i-1}} + \sum_{j=1}^{5\cdot{2^{i-1}}}j) + (1 + 2 + 3) + 3 \\ 
+    T(n) &\leq n + \sum_{i=1}^{n}i + \sum_{i=1}^{\log_{2}{n} + 1}(5\cdot{2^i} + \sum_{j=1}^{5\cdot{2^i}}{j}) + (1 + 2 + 3) + 3 \\
+    T(n) &\leq \tfrac{403n^2}{6} + \tfrac{63n}{2} - \tfrac{68}{3n} \\ 
+    \tfrac{T(n)}{n} &\leq \tfrac{\tfrac{403n^2}{6} + \tfrac{63n}{2} - \tfrac{68}{3n}}{n}  \\ 
+    \tfrac{T(n)}{n} &\leq \tfrac{403n^2 + 189n - 136}{6n} \tag*{(computed using Wolfram Alpha)} 
+    \\
+    \tfrac{T(n)}{n} &\in{\Theta(n)} \\ 
+\end{align*}
+Thus, the amortized cost per operation for \verb|INSERT| is $\Theta(n)$. However, the sum of operations for $n$ worst-case \verb|DELETE| operations is the same as $T(n)$. This is because \verb|DELETE| re-hashes into a new \verb|HashTable| as well, meaning we re-size, probe, and insert the same amount of times as if we went backwards from the $n$ insertions we did earlier, starting from $n$ insertions. Thus, the amortized cost per operation is also $\Theta(n)$ as well for \verb|DELETE|. \\
+
+\noindent I loved working on this problem, and I'd love to hear your thoughts on my solution, and how we can move forward in the hiring process at Super-Awesome-Org. I am looking forward to your response! \\ 
+
+\noindent Thanks, \\ 
+Robert
+
+\end{document}
