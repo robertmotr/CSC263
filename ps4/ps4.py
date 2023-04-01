@@ -49,11 +49,11 @@ def catch_me_if_you_can(nrows, ncols, bahar_row, bahar_col, tingting_row, tingti
         bahar_pos = move_bahar(bahar_pos[0], bahar_pos[1], ncols)
         moves += 1
 
-        if array[bahar_pos[0]][bahar_pos[1]] == moves:
+        if array[bahar_pos[1]][bahar_pos[0]] == moves:
             return "Tingting wins in " + str(moves) + " moves"
-        elif array[bahar_pos[0]][bahar_pos[1]] < moves:
+        elif array[bahar_pos[1]][bahar_pos[0]] < moves:
             # check if tingting CAN catch up
-            min_moves = array[bahar_pos[0]][bahar_pos[1]]
+            min_moves = array[bahar_pos[1]][bahar_pos[0]]
             if (moves - min_moves) % 2 == 0:
                 return "Tingting wins in " + str(moves) + " moves"
     return "Bahar wins in " + str(moves-1) + " moves"
@@ -107,7 +107,9 @@ if __name__ == '__main__':
     assert s == "Bahar wins in 19 moves"
     s = catch_me_if_you_can(49, 81, 0, 9, 33, 22)
     assert s == "Tingting wins in 12 moves"
+
     s = catch_me_if_you_can(62, 8, 46, 0, 31, 0)
+    print(s)
     assert s == "Bahar wins in 14 moves"
     s = catch_me_if_you_can(11, 47, 5, 27, 4, 24)
     assert s == "Tingting wins in 4 moves"
