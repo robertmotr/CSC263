@@ -40,7 +40,13 @@ def catch_me_if_you_can(nrows, ncols, bahar_row, bahar_col, tingting_row, tingti
     bahar_row/bahar_col: Bahar's starting location
     tingting_row/tingting_col: Tingting's starting location
     '''
+
     array = generate_min_moves(nrows, ncols, tingting_col, tingting_row)
+
+    if(nrows == 3 == ncols): #funny edge case where knight might not be able to visit entire board.
+        if tingting_row == 1 == tingting_col:
+            return "Bahar wins in " + str(1 - bahar_row) + " moves"
+        else: array[1][1] = 10
 
     bahar_pos = (bahar_col, bahar_row)
     moves = 0
@@ -474,7 +480,8 @@ if __name__ == '__main__':
     assert s == "Bahar wins in 2 moves"
     s = catch_me_if_you_can(31, 72, 13, 33, 4, 26)
     assert s == "Tingting wins in 16 moves"
-    s = catch_me_if_you_can(99, 35, 28, 6, 26, 7)
+    s = catch_me_if_you_can(3, 3, 1, 1, 1, 1)
+    print(s)
     assert s == "Tingting wins in 3 moves"
 
     s = catch_me_if_you_can(1000, 1000, 800, 800, 700, 700) #should return Bahar wins in 198 moves
