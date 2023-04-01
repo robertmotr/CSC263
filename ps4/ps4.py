@@ -12,16 +12,16 @@ def isInside(m, n, curr_col, curr_row, move_col, move_row):
 def generate_min_moves(m, n, t_col, t_row):
     # m = rows
     # n = cols
-    array = [[None] * n] * m
+    array = [[None for j in range(n)] for i in range(m)]
 
-    array[t_col][t_row] = 0
+    array[t_row][t_col] = 0
 
     possible_moves = [(2, 1), (1, 2), (-1, 2), (2, -1), (-2, 1), (1, -2), (-2, -1), (-1, -2)]
-    q = [(t_col, t_row)]
+    q = [(t_row, t_col)]
     while q:
         u = q.pop(0)
         for move in possible_moves:
-            if isInside(m, n, u[0], u[1], move[0], move[1]) and array[u[0] + move[0]][u[1] + move[1]] is not None:
+            if isInside(m, n, u[1], u[0], move[1], move[0]) and array[u[0] + move[0]][u[1] + move[1]] is None:
                 array[u[0] + move[0]][u[1] + move[1]] = array[u[0]][u[1]] + 1
                 q.append((u[0] + move[0], u[1] + move[1]))
     return array
@@ -56,7 +56,7 @@ def catch_me_if_you_can(nrows, ncols, bahar_row, bahar_col, tingting_row, tingti
             min_moves = array[bahar_pos[0]][bahar_pos[1]]
             if (moves - min_moves) % 2 == 0:
                 return "Tingting wins in " + str(moves) + " moves"
-    return "Bahar wins in " + str(moves) + " moves"
+    return "Bahar wins in " + str(moves-1) + " moves"
 
 if __name__ == '__main__':
 
